@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rjsys.bbs.mapper.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.rjsys.bbs.pojo.Comment" >
+    <id column="c_id" property="cId" jdbcType="BIGINT" />
+    <result column="comment_id" property="commentId" jdbcType="BIGINT" />
+    <result column="user_id1" property="userId1" jdbcType="BIGINT" />
+    <result column="user_id2" property="userId2" jdbcType="BIGINT" />
+    <result column="art_time" property="artTime" jdbcType="VARCHAR" />
+    <result column="com_zan" property="comZan" jdbcType="INTEGER" />
+    <result column="cart_id" property="cartId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.rjsys.bbs.pojo.Comment" extends="BaseResultMap" >
+    <result column="article" property="article" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, comment_id, user_id1, user_id2, art_time, com_zan, cart_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    article
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.rjsys.bbs.pojo.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rjsys.bbs.pojo.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment
+    where c_id = #{cId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from comment
+    where c_id = #{cId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.rjsys.bbs.pojo.CommentExample" >
+    delete from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rjsys.bbs.pojo.Comment" >
+    insert into comment (c_id, comment_id, user_id1, 
+      user_id2, art_time, com_zan, 
+      cart_id, article)
+    values (#{cId,jdbcType=BIGINT}, #{commentId,jdbcType=BIGINT}, #{userId1,jdbcType=BIGINT}, 
+      #{userId2,jdbcType=BIGINT}, #{artTime,jdbcType=VARCHAR}, #{comZan,jdbcType=INTEGER}, 
+      #{cartId,jdbcType=BIGINT}, #{article,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rjsys.bbs.pojo.Comment" >
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="commentId != null" >
+        comment_id,
+      </if>
+      <if test="userId1 != null" >
+        user_id1,
+      </if>
+      <if test="userId2 != null" >
+        user_id2,
+      </if>
+      <if test="artTime != null" >
+        art_time,
+      </if>
+      <if test="comZan != null" >
+        com_zan,
+      </if>
+      <if test="cartId != null" >
+        cart_id,
+      </if>
+      <if test="article != null" >
+        article,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=BIGINT},
+      </if>
+      <if test="commentId != null" >
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="userId1 != null" >
+        #{userId1,jdbcType=BIGINT},
+      </if>
+      <if test="userId2 != null" >
+        #{userId2,jdbcType=BIGINT},
+      </if>
+      <if test="artTime != null" >
+        #{artTime,jdbcType=VARCHAR},
+      </if>
+      <if test="comZan != null" >
+        #{comZan,jdbcType=INTEGER},
+      </if>
+      <if test="cartId != null" >
+        #{cartId,jdbcType=BIGINT},
+      </if>
+      <if test="article != null" >
+        #{article,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rjsys.bbs.pojo.CommentExample" resultType="java.lang.Integer" >
+    select count(*) from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update comment
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=BIGINT},
+      </if>
+      <if test="record.commentId != null" >
+        comment_id = #{record.commentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId1 != null" >
+        user_id1 = #{record.userId1,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId2 != null" >
+        user_id2 = #{record.userId2,jdbcType=BIGINT},
+      </if>
+      <if test="record.artTime != null" >
+        art_time = #{record.artTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comZan != null" >
+        com_zan = #{record.comZan,jdbcType=INTEGER},
+      </if>
+      <if test="record.cartId != null" >
+        cart_id = #{record.cartId,jdbcType=BIGINT},
+      </if>
+      <if test="record.article != null" >
+        article = #{record.article,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update comment
+    set c_id = #{record.cId,jdbcType=BIGINT},
+      comment_id = #{record.commentId,jdbcType=BIGINT},
+      user_id1 = #{record.userId1,jdbcType=BIGINT},
+      user_id2 = #{record.userId2,jdbcType=BIGINT},
+      art_time = #{record.artTime,jdbcType=VARCHAR},
+      com_zan = #{record.comZan,jdbcType=INTEGER},
+      cart_id = #{record.cartId,jdbcType=BIGINT},
+      article = #{record.article,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update comment
+    set c_id = #{record.cId,jdbcType=BIGINT},
+      comment_id = #{record.commentId,jdbcType=BIGINT},
+      user_id1 = #{record.userId1,jdbcType=BIGINT},
+      user_id2 = #{record.userId2,jdbcType=BIGINT},
+      art_time = #{record.artTime,jdbcType=VARCHAR},
+      com_zan = #{record.comZan,jdbcType=INTEGER},
+      cart_id = #{record.cartId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rjsys.bbs.pojo.Comment" >
+    update comment
+    <set >
+      <if test="commentId != null" >
+        comment_id = #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="userId1 != null" >
+        user_id1 = #{userId1,jdbcType=BIGINT},
+      </if>
+      <if test="userId2 != null" >
+        user_id2 = #{userId2,jdbcType=BIGINT},
+      </if>
+      <if test="artTime != null" >
+        art_time = #{artTime,jdbcType=VARCHAR},
+      </if>
+      <if test="comZan != null" >
+        com_zan = #{comZan,jdbcType=INTEGER},
+      </if>
+      <if test="cartId != null" >
+        cart_id = #{cartId,jdbcType=BIGINT},
+      </if>
+      <if test="article != null" >
+        article = #{article,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rjsys.bbs.pojo.Comment" >
+    update comment
+    set comment_id = #{commentId,jdbcType=BIGINT},
+      user_id1 = #{userId1,jdbcType=BIGINT},
+      user_id2 = #{userId2,jdbcType=BIGINT},
+      art_time = #{artTime,jdbcType=VARCHAR},
+      com_zan = #{comZan,jdbcType=INTEGER},
+      cart_id = #{cartId,jdbcType=BIGINT},
+      article = #{article,jdbcType=LONGVARCHAR}
+    where c_id = #{cId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rjsys.bbs.pojo.Comment" >
+    update comment
+    set comment_id = #{commentId,jdbcType=BIGINT},
+      user_id1 = #{userId1,jdbcType=BIGINT},
+      user_id2 = #{userId2,jdbcType=BIGINT},
+      art_time = #{artTime,jdbcType=VARCHAR},
+      com_zan = #{comZan,jdbcType=INTEGER},
+      cart_id = #{cartId,jdbcType=BIGINT}
+    where c_id = #{cId,jdbcType=BIGINT}
+  </update>
+</mapper>

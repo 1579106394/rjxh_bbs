@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rjsys.bbs.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.rjsys.bbs.pojo.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="niko" property="niko" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="BIGINT" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="clazz" property="clazz" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="Cardnum" property="cardnum" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.rjsys.bbs.pojo.UserWithBLOBs" extends="BaseResultMap" >
+    <result column="autograph" property="autograph" jdbcType="LONGVARCHAR" />
+    <result column="mycard" property="mycard" jdbcType="LONGVARCHAR" />
+    <result column="Shoucang" property="shoucang" jdbcType="LONGVARCHAR" />
+    <result column="zan" property="zan" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, username, password, niko, telephone, email, sex, clazz, image, Cardnum, time, 
+    flag
+  </sql>
+  <sql id="Blob_Column_List" >
+    autograph, mycard, Shoucang, zan
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.rjsys.bbs.pojo.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rjsys.bbs.pojo.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.rjsys.bbs.pojo.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rjsys.bbs.pojo.UserWithBLOBs" >
+    insert into user (id, username, password, 
+      niko, telephone, email, 
+      sex, clazz, image, 
+      Cardnum, time, flag, 
+      autograph, mycard, Shoucang, 
+      zan)
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{niko,jdbcType=VARCHAR}, #{telephone,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{clazz,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, 
+      #{cardnum,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, 
+      #{autograph,jdbcType=LONGVARCHAR}, #{mycard,jdbcType=LONGVARCHAR}, #{shoucang,jdbcType=LONGVARCHAR}, 
+      #{zan,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rjsys.bbs.pojo.UserWithBLOBs" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="niko != null" >
+        niko,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="clazz != null" >
+        clazz,
+      </if>
+      <if test="image != null" >
+        image,
+      </if>
+      <if test="cardnum != null" >
+        Cardnum,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="autograph != null" >
+        autograph,
+      </if>
+      <if test="mycard != null" >
+        mycard,
+      </if>
+      <if test="shoucang != null" >
+        Shoucang,
+      </if>
+      <if test="zan != null" >
+        zan,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="niko != null" >
+        #{niko,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=BIGINT},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="clazz != null" >
+        #{clazz,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="cardnum != null" >
+        #{cardnum,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="autograph != null" >
+        #{autograph,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mycard != null" >
+        #{mycard,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="shoucang != null" >
+        #{shoucang,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zan != null" >
+        #{zan,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rjsys.bbs.pojo.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.niko != null" >
+        niko = #{record.niko,jdbcType=VARCHAR},
+      </if>
+      <if test="record.telephone != null" >
+        telephone = #{record.telephone,jdbcType=BIGINT},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=INTEGER},
+      </if>
+      <if test="record.clazz != null" >
+        clazz = #{record.clazz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null" >
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardnum != null" >
+        Cardnum = #{record.cardnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.autograph != null" >
+        autograph = #{record.autograph,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.mycard != null" >
+        mycard = #{record.mycard,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.shoucang != null" >
+        Shoucang = #{record.shoucang,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.zan != null" >
+        zan = #{record.zan,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update user
+    set id = #{record.id,jdbcType=BIGINT},
+      username = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      niko = #{record.niko,jdbcType=VARCHAR},
+      telephone = #{record.telephone,jdbcType=BIGINT},
+      email = #{record.email,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=INTEGER},
+      clazz = #{record.clazz,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      Cardnum = #{record.cardnum,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=INTEGER},
+      autograph = #{record.autograph,jdbcType=LONGVARCHAR},
+      mycard = #{record.mycard,jdbcType=LONGVARCHAR},
+      Shoucang = #{record.shoucang,jdbcType=LONGVARCHAR},
+      zan = #{record.zan,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set id = #{record.id,jdbcType=BIGINT},
+      username = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      niko = #{record.niko,jdbcType=VARCHAR},
+      telephone = #{record.telephone,jdbcType=BIGINT},
+      email = #{record.email,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=INTEGER},
+      clazz = #{record.clazz,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      Cardnum = #{record.cardnum,jdbcType=INTEGER},
+      time = #{record.time,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rjsys.bbs.pojo.UserWithBLOBs" >
+    update user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="niko != null" >
+        niko = #{niko,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=BIGINT},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="clazz != null" >
+        clazz = #{clazz,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="cardnum != null" >
+        Cardnum = #{cardnum,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="autograph != null" >
+        autograph = #{autograph,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mycard != null" >
+        mycard = #{mycard,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="shoucang != null" >
+        Shoucang = #{shoucang,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zan != null" >
+        zan = #{zan,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rjsys.bbs.pojo.UserWithBLOBs" >
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      niko = #{niko,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=BIGINT},
+      email = #{email,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      clazz = #{clazz,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      Cardnum = #{cardnum,jdbcType=INTEGER},
+      time = #{time,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
+      autograph = #{autograph,jdbcType=LONGVARCHAR},
+      mycard = #{mycard,jdbcType=LONGVARCHAR},
+      Shoucang = #{shoucang,jdbcType=LONGVARCHAR},
+      zan = #{zan,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rjsys.bbs.pojo.User" >
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      niko = #{niko,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=BIGINT},
+      email = #{email,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      clazz = #{clazz,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      Cardnum = #{cardnum,jdbcType=INTEGER},
+      time = #{time,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

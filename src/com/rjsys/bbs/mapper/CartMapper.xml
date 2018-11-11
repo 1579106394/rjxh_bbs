@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rjsys.bbs.mapper.CartMapper" >
+  <resultMap id="BaseResultMap" type="com.rjsys.bbs.pojo.Cart" >
+    <id column="cart_id" property="cartId" jdbcType="BIGINT" />
+    <result column="type_id" property="typeId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="top" property="top" jdbcType="INTEGER" />
+    <result column="great" property="great" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="zan" property="zan" jdbcType="INTEGER" />
+    <result column="shoucang" property="shoucang" jdbcType="INTEGER" />
+    <result column="readnum" property="readnum" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="huifutime" property="huifutime" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="huifunum" property="huifunum" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.rjsys.bbs.pojo.Cart" extends="BaseResultMap" >
+    <result column="article" property="article" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    cart_id, type_id, user_id, top, great, flag, zan, shoucang, readnum, title, huifutime, 
+    createtime, huifunum
+  </sql>
+  <sql id="Blob_Column_List" >
+    article
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.rjsys.bbs.pojo.CartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rjsys.bbs.pojo.CartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cart
+    where cart_id = #{cartId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from cart
+    where cart_id = #{cartId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.rjsys.bbs.pojo.CartExample" >
+    delete from cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rjsys.bbs.pojo.Cart" >
+    insert into cart (cart_id, type_id, user_id, 
+      top, great, flag, zan, 
+      shoucang, readnum, title, 
+      huifutime, createtime, huifunum, 
+      article)
+    values (#{cartId,jdbcType=BIGINT}, #{typeId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{top,jdbcType=INTEGER}, #{great,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, #{zan,jdbcType=INTEGER}, 
+      #{shoucang,jdbcType=INTEGER}, #{readnum,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{huifutime,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{huifunum,jdbcType=INTEGER}, 
+      #{article,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rjsys.bbs.pojo.Cart" >
+    insert into cart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cartId != null" >
+        cart_id,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="top != null" >
+        top,
+      </if>
+      <if test="great != null" >
+        great,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="zan != null" >
+        zan,
+      </if>
+      <if test="shoucang != null" >
+        shoucang,
+      </if>
+      <if test="readnum != null" >
+        readnum,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="huifutime != null" >
+        huifutime,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="huifunum != null" >
+        huifunum,
+      </if>
+      <if test="article != null" >
+        article,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cartId != null" >
+        #{cartId,jdbcType=BIGINT},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="top != null" >
+        #{top,jdbcType=INTEGER},
+      </if>
+      <if test="great != null" >
+        #{great,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="zan != null" >
+        #{zan,jdbcType=INTEGER},
+      </if>
+      <if test="shoucang != null" >
+        #{shoucang,jdbcType=INTEGER},
+      </if>
+      <if test="readnum != null" >
+        #{readnum,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="huifutime != null" >
+        #{huifutime,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="huifunum != null" >
+        #{huifunum,jdbcType=INTEGER},
+      </if>
+      <if test="article != null" >
+        #{article,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rjsys.bbs.pojo.CartExample" resultType="java.lang.Integer" >
+    select count(*) from cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update cart
+    <set >
+      <if test="record.cartId != null" >
+        cart_id = #{record.cartId,jdbcType=BIGINT},
+      </if>
+      <if test="record.typeId != null" >
+        type_id = #{record.typeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.top != null" >
+        top = #{record.top,jdbcType=INTEGER},
+      </if>
+      <if test="record.great != null" >
+        great = #{record.great,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.zan != null" >
+        zan = #{record.zan,jdbcType=INTEGER},
+      </if>
+      <if test="record.shoucang != null" >
+        shoucang = #{record.shoucang,jdbcType=INTEGER},
+      </if>
+      <if test="record.readnum != null" >
+        readnum = #{record.readnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.huifutime != null" >
+        huifutime = #{record.huifutime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.huifunum != null" >
+        huifunum = #{record.huifunum,jdbcType=INTEGER},
+      </if>
+      <if test="record.article != null" >
+        article = #{record.article,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update cart
+    set cart_id = #{record.cartId,jdbcType=BIGINT},
+      type_id = #{record.typeId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      top = #{record.top,jdbcType=INTEGER},
+      great = #{record.great,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=INTEGER},
+      zan = #{record.zan,jdbcType=INTEGER},
+      shoucang = #{record.shoucang,jdbcType=INTEGER},
+      readnum = #{record.readnum,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      huifutime = #{record.huifutime,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=VARCHAR},
+      huifunum = #{record.huifunum,jdbcType=INTEGER},
+      article = #{record.article,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update cart
+    set cart_id = #{record.cartId,jdbcType=BIGINT},
+      type_id = #{record.typeId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      top = #{record.top,jdbcType=INTEGER},
+      great = #{record.great,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=INTEGER},
+      zan = #{record.zan,jdbcType=INTEGER},
+      shoucang = #{record.shoucang,jdbcType=INTEGER},
+      readnum = #{record.readnum,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      huifutime = #{record.huifutime,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=VARCHAR},
+      huifunum = #{record.huifunum,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rjsys.bbs.pojo.Cart" >
+    update cart
+    <set >
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="top != null" >
+        top = #{top,jdbcType=INTEGER},
+      </if>
+      <if test="great != null" >
+        great = #{great,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="zan != null" >
+        zan = #{zan,jdbcType=INTEGER},
+      </if>
+      <if test="shoucang != null" >
+        shoucang = #{shoucang,jdbcType=INTEGER},
+      </if>
+      <if test="readnum != null" >
+        readnum = #{readnum,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="huifutime != null" >
+        huifutime = #{huifutime,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="huifunum != null" >
+        huifunum = #{huifunum,jdbcType=INTEGER},
+      </if>
+      <if test="article != null" >
+        article = #{article,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where cart_id = #{cartId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rjsys.bbs.pojo.Cart" >
+    update cart
+    set type_id = #{typeId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      top = #{top,jdbcType=INTEGER},
+      great = #{great,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER},
+      zan = #{zan,jdbcType=INTEGER},
+      shoucang = #{shoucang,jdbcType=INTEGER},
+      readnum = #{readnum,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      huifutime = #{huifutime,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=VARCHAR},
+      huifunum = #{huifunum,jdbcType=INTEGER},
+      article = #{article,jdbcType=LONGVARCHAR}
+    where cart_id = #{cartId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rjsys.bbs.pojo.Cart" >
+    update cart
+    set type_id = #{typeId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      top = #{top,jdbcType=INTEGER},
+      great = #{great,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER},
+      zan = #{zan,jdbcType=INTEGER},
+      shoucang = #{shoucang,jdbcType=INTEGER},
+      readnum = #{readnum,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      huifutime = #{huifutime,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=VARCHAR},
+      huifunum = #{huifunum,jdbcType=INTEGER}
+    where cart_id = #{cartId,jdbcType=BIGINT}
+  </update>
+</mapper>

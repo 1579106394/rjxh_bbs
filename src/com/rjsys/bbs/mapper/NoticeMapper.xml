@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rjsys.bbs.mapper.NoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.rjsys.bbs.pojo.Notice" >
+    <id column="notice_id" property="noticeId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="not_time" property="notTime" jdbcType="VARCHAR" />
+    <result column="not_flag" property="notFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.rjsys.bbs.pojo.Notice" extends="BaseResultMap" >
+    <result column="article" property="article" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    notice_id, user_id, not_time, not_flag
+  </sql>
+  <sql id="Blob_Column_List" >
+    article
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.rjsys.bbs.pojo.NoticeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from notice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.rjsys.bbs.pojo.NoticeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from notice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from notice
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from notice
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.rjsys.bbs.pojo.NoticeExample" >
+    delete from notice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.rjsys.bbs.pojo.Notice" >
+    insert into notice (notice_id, user_id, not_time, 
+      not_flag, article)
+    values (#{noticeId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{notTime,jdbcType=VARCHAR}, 
+      #{notFlag,jdbcType=INTEGER}, #{article,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rjsys.bbs.pojo.Notice" >
+    insert into notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="noticeId != null" >
+        notice_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="notTime != null" >
+        not_time,
+      </if>
+      <if test="notFlag != null" >
+        not_flag,
+      </if>
+      <if test="article != null" >
+        article,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="noticeId != null" >
+        #{noticeId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="notTime != null" >
+        #{notTime,jdbcType=VARCHAR},
+      </if>
+      <if test="notFlag != null" >
+        #{notFlag,jdbcType=INTEGER},
+      </if>
+      <if test="article != null" >
+        #{article,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.rjsys.bbs.pojo.NoticeExample" resultType="java.lang.Integer" >
+    select count(*) from notice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update notice
+    <set >
+      <if test="record.noticeId != null" >
+        notice_id = #{record.noticeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.notTime != null" >
+        not_time = #{record.notTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notFlag != null" >
+        not_flag = #{record.notFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.article != null" >
+        article = #{record.article,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update notice
+    set notice_id = #{record.noticeId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      not_time = #{record.notTime,jdbcType=VARCHAR},
+      not_flag = #{record.notFlag,jdbcType=INTEGER},
+      article = #{record.article,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update notice
+    set notice_id = #{record.noticeId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      not_time = #{record.notTime,jdbcType=VARCHAR},
+      not_flag = #{record.notFlag,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="getNoticeList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from notice
+    <where>
+      not_flag != 3
+        and user_id in (#{2}, 0)
+
+
+    </where>
+    limit #{0}, #{1}
+  </select>
+  <select id="getNoticeList2" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from notice
+    <where>
+      not_flag != 3
+
+
+    </where>
+    limit #{0}, #{1}
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.rjsys.bbs.pojo.Notice" >
+    update notice
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="notTime != null" >
+        not_time = #{notTime,jdbcType=VARCHAR},
+      </if>
+      <if test="notFlag != null" >
+        not_flag = #{notFlag,jdbcType=INTEGER},
+      </if>
+      <if test="article != null" >
+        article = #{article,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rjsys.bbs.pojo.Notice" >
+    update notice
+    set user_id = #{userId,jdbcType=BIGINT},
+      not_time = #{notTime,jdbcType=VARCHAR},
+      not_flag = #{notFlag,jdbcType=INTEGER},
+      article = #{article,jdbcType=LONGVARCHAR}
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.rjsys.bbs.pojo.Notice" >
+    update notice
+    set user_id = #{userId,jdbcType=BIGINT},
+      not_time = #{notTime,jdbcType=VARCHAR},
+      not_flag = #{notFlag,jdbcType=INTEGER}
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

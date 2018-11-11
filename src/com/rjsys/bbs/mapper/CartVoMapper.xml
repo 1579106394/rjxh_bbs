@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rjsys.bbs.mapper.CartVoMapper">
+    <resultMap id="cartAndType" type="cartVo">
+        <id column="cart_id" property="cartId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="mold" property="mold" jdbcType="VARCHAR"/>
+        <result column="top" property="top" jdbcType="INTEGER"/>
+        <result column="jubao" property="jubao" jdbcType="INTEGER"/>
+        <result column="great" property="great" jdbcType="INTEGER"/>
+        <result column="flag" property="flag" jdbcType="INTEGER"/>
+        <result column="zan" property="zan" jdbcType="INTEGER"/>
+        <result column="shoucang" property="shoucang" jdbcType="INTEGER"/>
+        <result column="readnum" property="readnum" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="article" property="article" jdbcType="VARCHAR"/>
+        <result column="huifutime" property="huifutime" jdbcType="VARCHAR"/>
+        <result column="createtime" property="createtime" jdbcType="VARCHAR"/>
+        <result column="huifunum" property="huifunum" jdbcType="INTEGER"/>
+        <association property="type" javaType="Type">
+            <id column="type_id" property="typeId"/>
+            <result column="name" property="name"/>
+            <result column="url" property="url"/>
+        </association>
+        <association property="user" javaType="User">
+            <id column="id" property="id"/>
+            <result column="niko" property="niko"/>
+            <result column="image" property="image"/>
+            <result column="flag" property="flag"/>
+        </association>
+    </resultMap>
+
+    <!-- 根据排序类型查询 -->
+    <select id="getCartVoListOrder" parameterType="cartUtils" resultMap="cartAndType">
+        SELECT * FROM cart c, type t, USER u
+        <where>
+            u.id = c.user_id and t.type_id = c.type_id and c.flag=1
+            <if test="typeId!=0 and typeId != null and typeId != ''">
+                AND c.type_id = #{typeId}
+            </if>
+            <if test="type == 'great'">
+                and c.great = 2
+            </if>
+        </where>
+        ORDER BY top DESC, ${type} desc
+        limit #{index}, #{currentCount}
+    </select>
+
+    <!-- 查找所有通知帖 -->
+    <select id="getNoticeList" resultMap="cartAndType">
+	  	SELECT * FROM cart c, USER u
+		where u.id = c.user_id and c.flag = 3
+		ORDER BY createtime DESC
+	  	limit 0,10
+  </select>
+
+    <!-- 查找热议帖子 -->
+    <select id="getHotList" resultMap="cartAndType">
+  		SELECT * FROM cart c, USER u
+		where u.id = c.user_id and c.flag = 1
+		ORDER BY huifunum DESC
+	  	limit 0,10
+  </select>
+
+    <select id="getCartById" parameterType="Long" resultMap="cartAndType">
+  	SELECT * FROM cart c, TYPE t, USER u
+WHERE c.cart_id = #{id} AND u.id = c.user_id AND c.type_id = t.type_id
+
+  </select>
+
+    <select id="getCartCount" parameterType="Integer" resultType="Integer">
+  	select count(*) from cart
+  	where type_id = #{id}
+  </select>
+
+    <!-- 查看数+1 -->
+    <update id="addReadNum" parameterType="Long">
+	UPDATE cart SET readnum = readnum+1
+WHERE cart_id=#{id}
+	</update>
+
+    <!-- 点赞 -->
+    <update id="zan" parameterType="cart">
+		UPDATE cart SET zan = #{zan} WHERE cart_id = #{cartId}
+	</update>
+    <!-- 收藏 -->
+    <update id="shoucang" parameterType="cart">
+		UPDATE cart SET shoucang = #{shoucang} WHERE cart_id = #{cartId}
+	</update>
+    <!-- 举报 -->
+    <update id="jubao" parameterType="cartVo">
+		UPDATE cart SET jubao = #{jubao} WHERE cart_id = #{cartId}
+	</update>
+
+    <!-- 查找搜索数 -->
+    <select id="getSearchCartCount" resultType="Integer">
+        select count(*) from cart
+        <where>
+            <foreach collection="array" item="key" separator="%" open="title like '%" close="%'">${key}</foreach>
+        </where>
+    </select>
+
+    <!-- 搜索 -->
+    <select id="getCartListBySearch" parameterType="searchVo" resultMap="cartAndType">
+        select * from cart c, type t, USER u
+        <where>
+            (
+            <foreach collection="strings" item="key" separator="%" open="c.title like '%" close="%'">${key}</foreach>
+            or
+            <foreach collection="strings" item="key" separator="%" open="c.article like '%" close="%'">${key}</foreach>
+            )
+            and u.id = c.user_id and t.type_id = c.type_id and c.flag=1
+        </where>
+        ORDER BY c.readnum DESC, c.zan desc
+    </select>
+
+    <insert id="newCart" parameterType="Cart">
+		insert into cart(type_id, mold, user_id, article, title, huifutime, createtime) values
+		(#{typeId}, #{mold}, #{userId}, #{article}, #{title}, #{huifutime}, #{createtime})
+	</insert>
+
+    <update id="editCart" parameterType="Cart">
+        update cart set
+        type_id = #{typeId},
+        mold = #{mold},
+        article = #{article},
+        title = #{title},
+        huifutime = #{huifutime}
+        where
+          cart_id = #{cartId}
+    </update>
+
+</mapper>
